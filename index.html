@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Photo Gallery — Prompts & Images</title>
+  <meta name="description" content="Galerie d'images IA avec leurs prompts de génération, alimentée par Google Sheets via n8n." />
+  <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <h1>AI Photo<span>Gallery</span></h1>
+    </div>
+    <div class="header-tools">
+      <input id="search" type="search" placeholder="Rechercher un prompt…" autocomplete="off" />
+      <button id="refresh" class="btn-icon" title="Rafraîchir" aria-label="Rafraîchir">⟳</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Des images, des prompts, une galerie vivante.</h2>
+      <p>Chaque image déposée sur Drive est analysée par une IA qui en déduit le prompt de
+        régénération, puis publiée ici automatiquement.</p>
+      <div id="stats" class="stats" hidden></div>
+    </section>
+
+    <section id="gallery" class="gallery" aria-live="polite"></section>
+
+    <div id="state" class="state"></div>
+  </main>
+
+  <footer class="site-footer">
+    <span>Propulsé par n8n + Google Sheets · <a id="apiLink" href="#" target="_blank" rel="noopener">API</a></span>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" hidden>
+    <button class="lightbox-close" aria-label="Fermer">✕</button>
+    <figure class="lightbox-content" role="dialog" aria-modal="true">
+      <img id="lb-img" alt="" />
+      <figcaption>
+        <p id="lb-prompt" class="lb-prompt"></p>
+        <div class="lb-meta">
+          <span id="lb-date"></span>
+          <button id="lb-copy" class="btn">Copier le prompt</button>
+          <a id="lb-open" class="btn ghost" target="_blank" rel="noopener">Ouvrir sur Drive</a>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- Card template -->
+  <template id="card-tpl">
+    <article class="card">
+      <div class="card-media">
+        <img loading="lazy" alt="" />
+        <button class="card-copy" title="Copier le prompt">⧉</button>
+      </div>
+      <p class="card-prompt"></p>
+    </article>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
