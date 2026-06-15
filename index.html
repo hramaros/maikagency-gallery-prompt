@@ -3,16 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Photo Gallery — Prompts & Images</title>
-  <meta name="description" content="Galerie d'images IA avec leurs prompts de génération, alimentée par Google Sheets via n8n." />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f59e0b" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0b" />
+  <title>AI Photo Gallery — Prompts & Images | Maikagency</title>
+  <meta name="description" content="Galerie d'images IA avec leurs prompts de génération, alimentée par Google Sheets via n8n. Un projet Maikagency." />
+  <link rel="icon" href="https://www.maikagency.dev/favicon-32x32.ico" />
+  <link rel="icon" href="https://www.maikagency.dev/favicon-16x16.ico" sizes="16x16" />
+  <link rel="apple-touch-icon" href="https://www.maikagency.dev/favicon-180x180.ico" />
   <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="bg-decor" aria-hidden="true">
+    <div class="grid-background"></div>
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+  </div>
+
   <header class="site-header">
     <div class="brand">
-      <span class="brand-dot"></span>
-      <h1>AI Photo<span>Gallery</span></h1>
+      <a class="brand-logo" href="https://www.maikagency.dev" target="_blank" rel="noopener" aria-label="Maikagency">
+        <img src="https://www.maikagency.dev/images/maikagency-no-bg.png" alt="" width="36" height="36" loading="lazy" />
+      </a>
+      <h1>AI Photo<span class="gradient-text">Gallery</span></h1>
     </div>
     <div class="header-tools">
       <input id="search" type="search" placeholder="Rechercher un prompt…" autocomplete="off" />
@@ -22,7 +39,7 @@
 
   <main>
     <section class="hero">
-      <h2>Des images, des prompts, une galerie vivante.</h2>
+      <h2>Des images, des prompts, une <span class="gradient-text">galerie vivante</span>.</h2>
       <p>Chaque image déposée sur Drive est analysée par une IA qui en déduit le prompt de
         régénération, puis publiée ici automatiquement.</p>
       <div id="stats" class="stats" hidden></div>
@@ -37,6 +54,8 @@
 
   <footer class="site-footer">
     <span>Propulsé par n8n + Google Sheets · <a id="apiLink" href="#" target="_blank" rel="noopener">API</a></span>
+    <span> · </span>
+    <a href="https://www.maikagency.dev" target="_blank" rel="noopener">Un projet <strong class="gradient-text">Maikagency</strong></a>
   </footer>
 
   <!-- Lightbox -->
