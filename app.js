@@ -226,6 +226,15 @@
   const lbOpen = document.getElementById("lb-open");
 
   function openLightbox(row) {
+    // Same fallback strategy as the cards: if the direct lh3 link fails, retry
+    // with a Drive thumbnail derived from the file id.
+    lbImg.dataset.triedFallback = "";
+    lbImg.onerror = () => {
+      if (!lbImg.dataset.triedFallback && row.id) {
+        lbImg.dataset.triedFallback = "1";
+        lbImg.src = fallbackFromId(row.id);
+      }
+    };
     lbImg.src = row.imageUrl;
     lbImg.alt = row.prompt || row.fileName || "";
     lbPrompt.textContent = row.prompt || "(prompt indisponible)";
@@ -242,11 +251,14 @@
   }
   function closeLightbox() {
     lightbox.hidden = true;
-    lbImg.src = "";
+    lbImg.onerror = null;
+    lbImg.removeAttribute("src");
     document.body.style.overflow = "";
   }
+  const lbCloseBtn = lightbox.querySelector(".lightbox-close");
+  if (lbCloseBtn) lbCloseBtn.addEventListener("click", (e) => { e.stopPropagation(); closeLightbox(); });
   lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox || e.target.classList.contains("lightbox-close")) closeLightbox();
+    if (e.target === lightbox || e.target.closest(".lightbox-close")) closeLightbox();
   });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !lightbox.hidden) closeLightbox(); });
 

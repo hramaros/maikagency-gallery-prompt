@@ -13,6 +13,11 @@
 
 * { box-sizing: border-box; }
 
+/* The `hidden` attribute must always win, even over elements that set their own
+   `display` (e.g. .lightbox/.filters/.btn). Without this, author `display` rules
+   override the UA `[hidden]{display:none}` and "hidden" elements stay visible. */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {
