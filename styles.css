@@ -243,7 +243,6 @@ main { max-width: 1280px; margin: 0 auto; padding: 0 22px 80px; }
   transition: transform .15s, filter .15s;
 }
 .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
-.btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
 
 /* Toast */
 .toast {
