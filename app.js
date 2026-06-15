@@ -7,9 +7,12 @@
   const stateEl = document.getElementById("state");
   const statsEl = document.getElementById("stats");
   const searchEl = document.getElementById("search");
+  const filtersEl = document.getElementById("filters");
   const cardTpl = document.getElementById("card-tpl");
 
+  const ALL = "__all__";
   let items = [];
+  let activeCategory = ALL;
 
   // --- Helpers ---------------------------------------------------------------
 
@@ -30,6 +33,7 @@
         id: get(r, F.id || "id", get(r, "id", "")),
         imageUrl: get(r, F.imageUrl || "imageUrl"),
         prompt: get(r, F.prompt || "prompt"),
+        category: String(get(r, F.category || "category")).trim(),
         fileName: get(r, F.fileName || "fileName"),
         driveViewUrl: get(r, F.driveViewUrl || "driveViewUrl"),
         createdAt: get(r, F.createdAt || "createdAt"),
@@ -111,6 +115,12 @@
       const img = node.querySelector("img");
       const promptEl = node.querySelector(".card-prompt");
       const copyBtn = node.querySelector(".card-copy");
+      const catEl = node.querySelector(".card-cat");
+
+      if (catEl && row.category) {
+        catEl.textContent = row.category;
+        catEl.hidden = false;
+      }
 
       card.style.animationDelay = `${Math.min(i * 35, 600)}ms`;
       img.src = row.imageUrl;
@@ -139,13 +149,64 @@
     gallery.appendChild(frag);
   }
 
+  function matchesCategory(r) {
+    return activeCategory === ALL || (r.category || "") === activeCategory;
+  }
+
   function applyFilter() {
     const q = searchEl.value.trim().toLowerCase();
-    const filtered = q
-      ? items.filter((r) => (r.prompt || "").toLowerCase().includes(q) || (r.fileName || "").toLowerCase().includes(q))
-      : items;
+    const filtered = items.filter((r) => {
+      if (!matchesCategory(r)) return false;
+      if (!q) return true;
+      return (r.prompt || "").toLowerCase().includes(q) || (r.fileName || "").toLowerCase().includes(q);
+    });
     render(filtered);
     updateStats(filtered.length);
+  }
+
+  // Build the category filter chips from the categories present in the data.
+  function buildFilters() {
+    const counts = new Map();
+    items.forEach((r) => {
+      const c = r.category;
+      if (c) counts.set(c, (counts.get(c) || 0) + 1);
+    });
+
+    // No category data at all → hide the filter bar entirely.
+    if (counts.size === 0) {
+      filtersEl.hidden = true;
+      filtersEl.innerHTML = "";
+      return;
+    }
+
+    // "Autre" (fallback bucket) is always pushed to the end, the rest sorted A→Z.
+    const cats = [...counts.keys()].sort((a, b) => {
+      if (a === "Autre") return 1;
+      if (b === "Autre") return -1;
+      return a.localeCompare(b, "fr");
+    });
+
+    if (!cats.includes(activeCategory) && activeCategory !== ALL) activeCategory = ALL;
+
+    const chips = [{ key: ALL, label: cfg.allCategoriesLabel || "Toutes", count: items.length }]
+      .concat(cats.map((c) => ({ key: c, label: c, count: counts.get(c) })));
+
+    filtersEl.innerHTML = "";
+    chips.forEach(({ key, label, count }) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chip" + (key === activeCategory ? " active" : "");
+      btn.dataset.cat = key;
+      btn.setAttribute("aria-pressed", key === activeCategory ? "true" : "false");
+      btn.innerHTML = `${label}<span class="chip-count">${count}</span>`;
+      btn.addEventListener("click", () => {
+        activeCategory = key;
+        buildFilters();
+        applyFilter();
+      });
+      filtersEl.appendChild(btn);
+    });
+    filtersEl.hidden = false;
   }
 
   function updateStats(shown) {
@@ -160,6 +221,7 @@
   const lbImg = document.getElementById("lb-img");
   const lbPrompt = document.getElementById("lb-prompt");
   const lbDate = document.getElementById("lb-date");
+  const lbCat = document.getElementById("lb-cat");
   const lbCopy = document.getElementById("lb-copy");
   const lbOpen = document.getElementById("lb-open");
 
@@ -168,6 +230,10 @@
     lbImg.alt = row.prompt || row.fileName || "";
     lbPrompt.textContent = row.prompt || "(prompt indisponible)";
     lbDate.textContent = fmtDate(row.createdAt);
+    if (lbCat) {
+      if (row.category) { lbCat.textContent = row.category; lbCat.hidden = false; }
+      else lbCat.hidden = true;
+    }
     lbCopy.onclick = () => copyText(row.prompt || "");
     if (row.driveViewUrl) { lbOpen.href = row.driveViewUrl; lbOpen.hidden = false; }
     else lbOpen.hidden = true;
@@ -198,6 +264,7 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       items = sortRows(normalize(data));
+      buildFilters();
       applyFilter();
     } catch (err) {
       gallery.innerHTML = "";

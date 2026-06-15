@@ -11,6 +11,7 @@ window.GALLERY_CONFIG = {
     id: "id",
     imageUrl: "imageUrl",
     prompt: "prompt",
+    category: "category",
     fileName: "fileName",
     driveViewUrl: "driveViewUrl",
     createdAt: "createdAt",
@@ -18,4 +19,9 @@ window.GALLERY_CONFIG = {
 
   // Affiche les plus récentes en premier (basé sur createdAt).
   newestFirst: true,
+
+  // Filtres par catégorie : les boutons sont générés automatiquement à partir
+  // des catégories renvoyées par l'API (définies dans le nœud n8n "Gallery Categories").
+  // Libellé du bouton qui affiche toutes les images.
+  allCategoriesLabel: "Toutes",
 };

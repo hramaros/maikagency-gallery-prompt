@@ -20,7 +20,7 @@ Workflow n8n : `Drive Image → Gallery (Vision Prompt + Sheets)`
 
 - `index.html` — structure de la page
 - `styles.css` — thème sombre, grille masonry, lightbox
-- `app.js` — fetch de l'API, rendu des cartes, recherche, lightbox, copie de prompt
+- `app.js` — fetch de l'API, rendu des cartes, recherche, **filtres par catégorie**, lightbox, copie de prompt
 - `config.js` — **à éditer** : URL de l'API et noms de colonnes
 
 ## Configuration
@@ -44,6 +44,7 @@ Format JSON attendu (tableau d'objets) :
     "fileName": "sunset-cat.png",
     "imageUrl": "https://lh3.googleusercontent.com/d/1AbC...",
     "prompt": "A photorealistic ginger cat ...",
+    "category": "Animaux",
     "driveViewUrl": "https://drive.google.com/file/d/1AbC.../view",
     "createdAt": "2026-06-13T10:00:00.000Z"
   }
@@ -51,6 +52,15 @@ Format JSON attendu (tableau d'objets) :
 ```
 
 L'app accepte aussi `{ "data": [...] }` ou `{ "results": [...] }`.
+
+### Filtres par catégorie
+
+Le site génère automatiquement des boutons de filtre à partir des valeurs de la
+colonne `category`. La liste des catégories est définie côté n8n dans le nœud Set
+**Gallery Categories** ; elle est injectée dans le prompt de vision pour que l'IA
+classe chaque image. Pour ajouter/retirer une catégorie, il suffit d'éditer ce nœud
+(gardez `Autre` comme valeur de secours). Si la colonne `category` est absente,
+la barre de filtres reste simplement masquée.
 
 ## Lancer en local
 
@@ -80,4 +90,5 @@ Aucune étape de build ; pas de dépendances.
 3. Choisir le dossier Drive à surveiller.
 4. **Activer** le workflow.
 
-En-têtes de la feuille : `id | fileName | imageUrl | prompt | driveViewUrl | createdAt`.
+En-têtes de la feuille : `id | fileName | imageUrl | prompt | category | driveViewUrl | createdAt`.
+(La colonne `category` est créée automatiquement par n8n si elle est absente.)

@@ -85,6 +85,62 @@ main { max-width: 1280px; margin: 0 auto; padding: 0 22px 80px; }
 .stats { margin-top: 18px; color: var(--muted); font-size: 14px; }
 .stats strong { color: var(--text); }
 
+/* Category filters */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 26px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s, transform .15s;
+}
+.chip:hover { color: var(--text); border-color: #3a3f52; transform: translateY(-1px); }
+.chip.active {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+.chip-count {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  color: inherit;
+}
+.chip.active .chip-count { background: rgba(255, 255, 255, .25); }
+
+/* Category badge on cards */
+.card-cat {
+  position: absolute; top: 10px; left: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11.5px; font-weight: 600;
+  color: #fff;
+  background: rgba(12, 13, 17, .7);
+  backdrop-filter: blur(6px);
+  letter-spacing: .01em;
+}
+.lb-cat {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px; font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+
 /* Gallery — masonry via CSS columns */
 .gallery {
   columns: 4 280px;
@@ -165,7 +221,7 @@ main { max-width: 1280px; margin: 0 auto; padding: 0 22px 80px; }
 .lightbox-content figcaption { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
 .lb-prompt { margin: 0; font-size: 15px; line-height: 1.65; color: var(--text); white-space: pre-wrap; }
 .lb-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: auto; }
-.lb-meta span { color: var(--muted); font-size: 13px; margin-right: auto; }
+.lb-meta #lb-date { color: var(--muted); font-size: 13px; margin-right: auto; }
 .lightbox-close {
   position: fixed; top: 18px; right: 22px;
   width: 44px; height: 44px; border-radius: 12px;
