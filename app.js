@@ -223,7 +223,6 @@
   const lbDate = document.getElementById("lb-date");
   const lbCat = document.getElementById("lb-cat");
   const lbCopy = document.getElementById("lb-copy");
-  const lbOpen = document.getElementById("lb-open");
 
   function openLightbox(row) {
     // Same fallback strategy as the cards: if the direct lh3 link fails, retry
@@ -244,8 +243,6 @@
       else lbCat.hidden = true;
     }
     lbCopy.onclick = () => copyText(row.prompt || "");
-    if (row.driveViewUrl) { lbOpen.href = row.driveViewUrl; lbOpen.hidden = false; }
-    else lbOpen.hidden = true;
     lightbox.hidden = false;
     document.body.style.overflow = "hidden";
   }

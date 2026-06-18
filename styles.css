@@ -306,8 +306,6 @@ main { max-width: 1280px; margin: 0 auto; padding: 0 22px 80px; }
   transition: transform .15s, filter .15s, box-shadow .2s;
 }
 .btn:hover { transform: translateY(-1px); filter: brightness(1.08); box-shadow: var(--glow); }
-.btn.ghost { background: transparent; border: 1px solid rgba(245, 158, 11, .35); color: var(--accent-light); }
-.btn.ghost:hover { background: rgba(245, 158, 11, .1); border-color: var(--accent-light); }
 
 /* Toast */
 .toast {
